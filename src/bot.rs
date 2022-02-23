@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use enigo::*;
 use rand::Rng;
 use std::{thread, time::Duration};
