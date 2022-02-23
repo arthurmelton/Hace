@@ -87,25 +87,41 @@ pub fn write(text: &str) {
     }
 }
 
-pub fn down_key(character:char) {
+pub fn down_key(character: char) {
     let mut enigo = Enigo::new();
     enigo.key_down(Key::Layout(character));
 }
 
-pub fn up_key(character:char) {
+pub fn up_key(character: char) {
     let mut enigo = Enigo::new();
     enigo.key_up(Key::Layout(character));
 }
 
-pub fn init(width: Option<i32>, height: Option<i32>, offset_x: Option<i32>, offset_y: Option<i32>, screen: Option<i32>) {
+pub fn init(
+    width: Option<i32>,
+    height: Option<i32>,
+    offset_x: Option<i32>,
+    offset_y: Option<i32>,
+    screen: Option<i32>,
+) {
     unsafe {
         let mut enigo = Enigo::new();
-        if width.is_some() {GAME.0 = width.unwrap();}
-        if height.is_some() {GAME.1 = height.unwrap();}
-        if offset_x.is_some() {GAME.2 = offset_x.unwrap();}
-        if offset_y.is_some() {GAME.3 = offset_y.unwrap();}
-        if screen.is_some() {GAME.4 = screen.unwrap();}
-        enigo.mouse_move_to(GAME.2, GAME.3+GAME.1);
+        if width.is_some() {
+            GAME.0 = width.unwrap();
+        }
+        if height.is_some() {
+            GAME.1 = height.unwrap();
+        }
+        if offset_x.is_some() {
+            GAME.2 = offset_x.unwrap();
+        }
+        if offset_y.is_some() {
+            GAME.3 = offset_y.unwrap();
+        }
+        if screen.is_some() {
+            GAME.4 = screen.unwrap();
+        }
+        enigo.mouse_move_to(GAME.2, GAME.3 + GAME.1);
     }
 }
 
@@ -145,19 +161,20 @@ pub fn right_click() {
     enigo.mouse_up(MouseButton::Right);
 }
 
-pub fn get_color(x:f32, y:f32) -> (u8,u8,u8) {
-    unsafe{
+pub fn get_color(x: f32, y: f32) -> (u8, u8, u8) {
+    unsafe {
         let pos = (
-            (GAME.0 as f32 * x) as i32
-                + GAME.2,
-            GAME.1 - (GAME.1 as f32 * y) as i32
-                + GAME.3,
+            (GAME.0 as f32 * x) as i32 + GAME.2,
+            GAME.1 - (GAME.1 as f32 * y) as i32 + GAME.3,
         );
         let mut capturer = Capturer::new(GAME.4.try_into().unwrap()).unwrap();
         let h = capturer.geometry().1;
         let ps = capturer.capture_frame().unwrap();
-    
-        let Bgr8 { r, g, b, .. } = ps.into_iter().nth(((pos.1 as u32*h)+pos.0 as u32).try_into().unwrap()).unwrap();
-        return (r,g,b);
+
+        let Bgr8 { r, g, b, .. } = ps
+            .into_iter()
+            .nth(((pos.1 as u32 * h) + pos.0 as u32).try_into().unwrap())
+            .unwrap();
+        (r, g, b)
     }
 }
