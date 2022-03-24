@@ -16,16 +16,16 @@ impl Mem {
         }
     }
 
-    pub fn read<T>(&self, offset: Vec<usize>) -> std::io::Result<*mut T> {
-        let mut item = process_memory::DataMember::<*mut T>::new(self.handle);
+    pub fn read<T>(&self, offset: Vec<usize>) -> std::io::Result<&T> {
+        let mut item = process_memory::DataMember::<&T>::new(self.handle);
         item.set_offset(offset);
         item.read()
     }
 
-    pub fn write<T>(&self, offset: Vec<usize>, write: &*mut T) -> std::io::Result<()> {
-        let mut item = process_memory::DataMember::<*mut T>::new(self.handle);
+    pub fn write<T>(&self, offset: Vec<usize>, write: &T) -> std::io::Result<()> {
+        let mut item = process_memory::DataMember::<&T>::new(self.handle);
         item.set_offset(offset);
-        item.write(write)
+        item.write(&write)
     }
 }
 
