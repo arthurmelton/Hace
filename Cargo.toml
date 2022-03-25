@@ -9,6 +9,7 @@ license = "GLP-3.0"
 licance-file = "LICENSE.txt"
 keywords = ["hack", "hacking"]
 publish = ["hace"]
+index = "https://github.com/amtitan/hace"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
