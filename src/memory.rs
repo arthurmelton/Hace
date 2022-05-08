@@ -1,19 +1,24 @@
 use process_memory::{Architecture, Memory, TryIntoProcessHandle};
 use sysinfo::{PidExt, ProcessExt, System, SystemExt};
+#[cfg(target_os = "windows")]
+use std::os::raw::c_void;
 
 #[derive(Clone, Debug)]
 pub struct Mem {
+    #[cfg(not(target_os = "windows"))]
     handle: (i32, Architecture),
+    #[cfg(target_os = "windows")]
+    handle: (*mut c_void, Architecture),
 }
 
 impl Mem {
     #[must_use]
     pub fn new(x: u32) -> Mem {
-        Mem {
+        return Mem {
             handle: (x as process_memory::Pid)
                 .try_into_process_handle()
                 .unwrap(),
-        }
+        };
     }
 
     pub fn read<T>(&self, offset: Vec<usize>) -> std::io::Result<&T> {
