@@ -11,6 +11,8 @@ pub struct Mem {
     handle: (*mut c_void, Architecture),
 }
 
+unsafe impl Send for Mem {}
+
 impl Mem {
     #[must_use]
     pub fn new(x: u32) -> Mem {
